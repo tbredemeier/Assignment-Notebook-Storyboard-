@@ -42,7 +42,6 @@
 		AEBB14DB20DC04F6003ADE8E = {
 			isa = PBXGroup;
 			children = (
-				AEBB14FB20DC0591003ADE8E /* Assignment.swift */,
 				AEBB14E620DC04F6003ADE8E /* Assignment Notebook */,
 				AEBB14E520DC04F6003ADE8E /* Products */,
 			);
@@ -62,6 +61,7 @@
 				AEBB14E720DC04F6003ADE8E /* AppDelegate.swift */,
 				AEBB14E920DC04F6003ADE8E /* MasterViewController.swift */,
 				AEBB14EB20DC04F6003ADE8E /* DetailViewController.swift */,
+				AEBB14FB20DC0591003ADE8E /* Assignment.swift */,
 				AEBB14ED20DC04F6003ADE8E /* Main.storyboard */,
 				AEBB14F020DC04F7003ADE8E /* Assets.xcassets */,
 				AEBB14F220DC04F7003ADE8E /* LaunchScreen.storyboard */,

@@ -52,6 +52,5 @@ class DetailViewController: UIViewController {
             assignment.detail = detailTextField.text!
         }
     }
-
 }
 
