@@ -12,18 +12,22 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var assignments = [Assignment]()
-
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = editButtonItem
-
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         navigationItem.rightBarButtonItem = addButton
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+        }
+        if let savedData = defaults.object(forKey: "data") as? Data {
+            if let decoded = try? JSONDecoder().decode([Assignment].self, from: savedData) {
+                assignments = decoded
+            }
         }
     }
 
@@ -31,6 +35,7 @@ class MasterViewController: UITableViewController {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
         tableView.reloadData()
+        saveData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,9 +68,16 @@ class MasterViewController: UITableViewController {
             let assignment = Assignment(title: titleTextField.text!, subject: subjectTextField.text!, dueDate: dueDateTextField.text!, detail: detailTextField.text!)
             self.assignments.append(assignment)
             self.tableView.reloadData()
+            self.saveData()
         }
         alert.addAction(insertAction)
         present(alert, animated: true, completion: nil)
+    }
+
+    func saveData() {
+        if let encoded = try? JSONEncoder().encode(assignments) {
+            defaults.set(encoded, forKey: "data")
+        }
     }
 
     // MARK: - Segues
@@ -109,6 +121,7 @@ class MasterViewController: UITableViewController {
         if editingStyle == .delete {
             assignments.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
@@ -117,6 +130,7 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let objectToMove = assignments.remove(at: sourceIndexPath.row)
         assignments.insert(objectToMove, at: destinationIndexPath.row)
+        saveData()
     }
 }
 
